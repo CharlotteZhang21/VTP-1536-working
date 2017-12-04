@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale = 1.0,maximum-scale = 1.0" />
+    <meta name="author" content="Vungle">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Vungle Endcard</title>
+    <script src="vungle.js"></script>
+    <link rel="stylesheet" href="vungle.css">
+    <link rel="stylesheet" href="style.css">
+    <!-- logo strike start -->
+    <style>#vungle-footer {display: none !important; }</style>
+    <!-- logo strike end -->
+</head>
+
+<body ontouchstart="ontouchstart" class="preload">
+    <div id="creative">
+        <!-- <img src="bg.jpg" /> -->
+    </div>
+    <div id="vungle-header" class="portrait-light landscape-light"><a id="vungle-close" href="javascript:void(0)" onclick="doSomething('close')"><span class="vungicon-close"></span></a></div>
+    <div id="vungle-footer" class="portrait-light landscape-light portrait-center landscape-right"><span class="footer vungicon-vungle"></span></div>
+    <!-- IEC Creative starts here-->
+    <!-- <img class="logo gameScreen" src="title.png" /> -->
+    <!-- <div class="girl"></div> -->
+    <div id="endAnimationContainer" class="endAnimationContainer">
+        <p id="youwon"></p>
+        <img class="billboard" src="youwon.png" />
+        <!-- <img class="welldone" src=".png" /> -->
+        <!-- <img class="rays" src="glow.png" /> -->
+    </div>
+    <div id="tooltip">TAP TO MATCH TWO MULTIPLIERS</div>
+    <div id="preAni" >
+        <!-- <div class="bonus"></div> -->
+        <img class="bonus" src="bonus.gif">
+    </div>
+    <div class="bottom-container gameScreen">
+        <img class="icon" src="icon.png">
+        <div class="cta" href="javascript:void(0)" onclick="doSomething('download')">
+        Download <span class="footer" data-icon="j"></span></div>
+    </div>
+   <!--  <img src="finger.png"> -->
+
+    <div id="game">
+        <div id="finalNumber">10x</div>
+        <div class="tile lock absolute" id="t1" ></div>
+        <div class="tile lock absolute" id="t2" ></div>
+        <div class="tile lock absolute" id="t3" ></div>
+        <div class="tile lock absolute" id="t4" ></div>
+        <div class="tile lock absolute" id="t5" ></div>
+        <div class="tile lock absolute" id="t6" ></div>
+        <div class="tile lock absolute" id="t7" ></div>
+        <div class="tile lock absolute" id="t8" ></div>
+
+        <div id="prizeBoard">
+            <div class="text">
+                <div class="prize original">
+                    <h2>TOTAL BET</h2>
+
+                    <p id="bet">15000000</p>
+                </div>
+                <div class="prizeSpace"><p>x</p></div>
+
+                <div class="prize multiplier">
+                    <h2>MULTIPLIER</h2>
+                    <p id="multi"></p>
+                </div>
+                <div class="prizeSpace"><p>=</p></div>
+                <div class="prize result">
+                    <h2>WIN</h2>
+                    <p id="finalPrize"></p>
+                </div>
+            </div>
+            
+
+            <img src="board.png"/>
+        </div>
+    </div>
+    
+    <div class="endScreen">
+        <img class="icon" src="icon.png" />
+        <div class="title">Nat Geo Wild Slots
+            <br/>New Casino</div>
+        <div class="rating">
+            <span class="footer" data-icon="p"></span>
+            <span class="footer" data-icon="p"></span>
+            <span class="footer" data-icon="p"></span>
+            <span class="footer" data-icon="p"></span>
+            <span class="footer" data-icon="p"></span>
+            <br/>
+            <!-- <span class="small"></span> -->
+        </div>
+        <div id="vungle-cta" class="cta" href="javascript:void(0)" onclick="doSomething('download')">Download <span class="footer" data-icon="j"></span></div>
+    </div>
+    <!-- IEC Creative ends here -->
+    <div class="hidden">
+        <script type="text/javascript">
+        <!--//--><![CDATA[//><!--
+        var images = new Array();
+
+        function preload() {
+            for (i = 0; i < preload.arguments.length; i++) {
+                images[i] = new Image()
+                images[i].src = preload.arguments[i]
+            }
+        }
+        preload(
+                "shell-close.png"
+            )
+            //--><!]]>
+        </script>
+    </div>
+    <script src="TweenMax.min.js"></script>
+    <script src="CustomEase.min.js"></script>
+    <script src="jquery.min.js"></script>
+    <script src="jquery-ui.min.js"></script>
+    <script type="text/javascript">
+
+    var bonusArrayDefault = [4, 4, 6, 6, 8, 8, 10, 10];
+    var bonusArrayRandom = [];
+
+    function randomSort(arr, newArr) { 
+        if(arr.length == 1) { 
+            newArr.push(arr[0]); 
+            return newArr;
+        }
+        
+        var random = Math.ceil(Math.random() * arr.length) - 1; 
+        // console.log(random);
+        newArr.push(arr[random]); 
+        arr.splice(random,1); 
+        return randomSort(arr, newArr); 
+    }
+
+    function showVungleCloseBtn() {
+        document.getElementById('vungle-close').className = 'visible';
+    }
+
+
+    window.onload = function() {
+        randomSort(bonusArrayDefault, bonusArrayRandom);
+        console.log(bonusArrayRandom);
+
+        for (var i = 1; i < 9; i++) {
+
+            var currentDiv = $('#t' + i );
+
+            currentDiv.html("<p class=\"tileText\">" + bonusArrayRandom[i-1] + "x </p>");
+            currentDiv.data("num", bonusArrayRandom[i-1] );
+            console.log(currentDiv.data());
+
+        }
+
+        removeClass(document.body, 'preload');
+        TweenMax.to($('#preAni'), .5, {
+            opacity: 0,
+            delay: 1.8,
+            ease: Expo.easeOut
+        })
+
+        if (orientationCheck() == "landscape") {
+           TweenMax.to($('#tooltip'), .5, {
+                right: '3%',
+                ease: Expo.easeOut,
+                delay: 3
+           }, 1);
+        }
+
+        setTimeout(function(){
+            showVungleCloseBtn();
+        }, 4000);
+
+    };
+
+    window.onresize = function() {
+        location.reload();
+    };
+
+    document.ontouchmove = function(e) {
+        e.preventDefault();
+    }
+    </script>
+    <script src="main.js"></script>
+</body>
+
+</html>
